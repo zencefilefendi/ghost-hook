@@ -4,7 +4,7 @@
 [![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
 [![eBPF](https://img.shields.io/badge/ebpf-O-black?style=for-the-badge)](https://ebpf.io/)
 [![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://www.kernel.org/)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: Proprietary](https://img.shields.io/badge/License-Zencefil_Efendi-red.svg?style=for-the-badge)](LICENSE)
 
 > *"Görünmez olanı vuramazsın. Statik olanı aşarsın ama değişeni asla."*
 
@@ -40,7 +40,7 @@ Ghost-Hook is an advanced proof-of-concept for a **Zero-Persistence** cyber defe
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/ghost-hook.git
+git clone https://github.com/zencefilefendi/ghost-hook.git
 cd ghost-hook
 
 # Build the project
@@ -50,8 +50,8 @@ cargo build --release
 sudo ./target/release/ghost_hook
 ```
 
-## 🏷️ Tags / Keywords
-`eBPF`, `Rust`, `Cybersecurity`, `Anti-Forensics`, `Polymorphism`, `EDR-Bypass`, `Zero-Persistence`, `Aya`, `Linux-Kernel`, `Active-Defense`
-
 ## 📜 License
-This project is licensed under the GPL-3.0 License.
+**Proprietary & Confidential**
+
+Copyright (c) 2026 Zencefil Efendi. All rights reserved.
+This project is proprietary. Any copying, modification, or distribution is strictly prohibited without explicit permission. See the [LICENSE](LICENSE) file for more details.
