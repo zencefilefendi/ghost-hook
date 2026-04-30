@@ -34,18 +34,19 @@ struct attack_event {
 // BPF_PRINTK veya benzeri hiçbir loglama (tracing) kullanılmaz.
 // Memory Scrubbing: User-space, eBPF'i temizlemeden önce bu fonksiyonu tetikleyecek.
 // Amaç: BPF map'lerinin içerisindeki threat verilerini rastgele (junk) byte'larla ezmek.
-SEC("kprobe/sys_prctl") // Prctl, user-space'den özel argümanlarla wipe sinyali göndermek için kullanılır.
-int ghost_memory_wipe(struct pt_regs *ctx) {
-    int option = (int)PT_REGS_PARM1(ctx);
+SEC("tracepoint/syscalls/sys_enter_prctl")
+int ghost_memory_wipe(struct trace_event_raw_sys_enter *ctx) {
+    // tracepoint'te argümanlar array (args) olarak gelir. 
+    // prctl(option, arg2, arg3, arg4, arg5)
+    int option = (int)ctx->args[0];
+    long arg2 = ctx->args[1];
     
-    // Sadece özel sihirli argüman (magic number) ile tetiklenir (örn: PR_SET_SECCOMP + custom flag)
-    // 0xDEADBEEF olarak belirliyoruz (Normal prctl davranışından ayırmak için).
-    if (option == 0xDEADBEEF) {
+    // Sadece özel sihirli argüman (magic number) ile tetiklenir
+    // 0xDEADBEEF olarak arg2 üzerinden bekliyoruz. option ise 22 (PR_SET_SECCOMP).
+    if (option == 22 && arg2 == 0xDEADBEEF) {
         JUNK_CODE_SLED;
         // Map Overwrite (Secure Wiping): 
         // Döngüler eBPF'de katı kurallara (verifier) tabidir, bu yüzden limitli/statik unrolled bir wipe yapıyoruz.
-        // Gerçek implementasyonda user-space tüm hash key'leri tek tek siler. Burada kernel seviyesinde
-        // sıfırlama simülasyonu yapıyoruz. (BPF_MAP_TYPE_HASH için batch_delete veya user-space update daha verimlidir)
         
         // Örnek bir kritik PID map elementini junk byte'la ezme
         u32 target_pid = 1337;

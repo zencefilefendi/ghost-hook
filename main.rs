@@ -112,6 +112,11 @@ async fn main() -> Result<(), anyhow::Error> {
     program.load()?;
     program.attach("syscalls", "sys_enter_ptrace")?;
     
+    // Kill-Switch Memory Wipe kancasını kernel'a yüklüyoruz
+    let wipe_prog: &mut TracePoint = bpf.program_mut("ghost_memory_wipe").unwrap().try_into()?;
+    wipe_prog.load()?;
+    wipe_prog.attach("syscalls", "sys_enter_prctl")?;
+    
     parse_and_apply_rules(&mut bpf)?;
 
     let mut ring_buf = RingBuf::try_from(bpf.map_mut("event_ringbuf").unwrap())?;
